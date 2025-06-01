@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 
-export default function TodoList({ todos, setTodos, setEditId, setTitle, setDescription }) {
+export default function TodoList({ todos, setTodos, setAddDialogId }) {
   const [descriptionShowId, setDescriptionShowId] = useState(null);
 
   const completeTodo = (isChecked, id) => {
@@ -14,16 +14,6 @@ export default function TodoList({ todos, setTodos, setEditId, setTitle, setDesc
     });
 
     setTodos(newData); // update the state
-  };
-
-  const onEdit = (id) => {
-    const todo = todos.find((t) => t.id == id);
-    if (!todo) {
-      return;
-    }
-    setEditId(id);
-    setTitle(todo.title);
-    setDescription(todo.description);
   };
 
   const onDelete = (id) => {
@@ -57,7 +47,7 @@ export default function TodoList({ todos, setTodos, setEditId, setTitle, setDesc
               <View>
                 <Pressable
                   android_ripple={{ color: "#859dfc" }}
-                  onPress={() => onEdit(item.id)}
+                  onPress={() => setAddDialogId(item.id)}
                 >
                   <Text style={styles.editIcon}>📝</Text>
                 </Pressable>

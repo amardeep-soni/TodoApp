@@ -9,19 +9,23 @@ import {
   Text,
   TextInput,
   View,
+  Modal,
 } from "react-native";
 import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
 
 export default function App() {
   const [todos, setTodos] = useState([]);
-  const [editId, setEditId] = useState(null);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  
+  const [addDialogId, setAddDialogId] = useState(null);
+
   return (
-    <>
+    <View style={styles.mainCont}>
+      <StatusBar style="light" />
+      <Pressable style={styles.addButton} onPress={() => setAddDialogId(0)}>
+        <Text style={styles.addButtonText}>+</Text>
+      </Pressable>
       <View style={styles.container}>
-        <StatusBar style="light" />
         <Image
           source={require("./assets/todo.png")}
           style={styles.image}
@@ -34,33 +38,38 @@ export default function App() {
         </View>
       </View>
       <View style={{ paddingHorizontal: 18, flex: 1 }}>
-        <TodoForm
-          todos={todos}
-          setTodos={setTodos}
-          editId={editId}
-          setEditId={setEditId}
-          title={title}
-          setTitle={setTitle}
-          description={description}
-          setDescription={setDescription}
-        ></TodoForm>
+        <Modal animationType="slide"
+          visible={addDialogId != null}
+          transparent={false}
+          onRequestClose={() => {
+            setAddDialogId(null);
+          }} >
+          <TodoForm
+            todos={todos}
+            setTodos={setTodos}
+            addDialogId={addDialogId}
+            setAddDialogId={setAddDialogId}
+          ></TodoForm>
+        </Modal>
 
         <Text style={styles.secondHeading}>Todos</Text>
         <View style={styles.itemCont}>
           <TodoList
             todos={todos}
             setTodos={setTodos}
-            setEditId={setEditId}
-            setTitle={setTitle}
-            setDescription={setDescription}
+            setAddDialogId={setAddDialogId}
           ></TodoList>
         </View>
       </View>
-    </>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  mainCont: {
+    flex: 1,
+    position: "relative"
+  },
   container: {
     paddingTop: 48,
     padding: 24,
@@ -69,6 +78,27 @@ const styles = StyleSheet.create({
     backgroundColor: "#4f72fc",
     borderBottomEndRadius: 32,
     borderBottomStartRadius: 32,
+  },
+  addButton: {
+    backgroundColor: "#4f72fc",
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    bottom: 24,
+    right: 24,
+    elevation: 5, // adds shadow on Android
+    shadowColor: "#000", // iOS shadow
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3.84,
+    zIndex: 10,
+  },
+  addButtonText: {
+    color: "white",
+    fontSize: 24,
   },
   heading: {
     fontSize: 24,
