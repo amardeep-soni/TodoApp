@@ -13,10 +13,10 @@ import {
 } from "react-native";
 import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function App() {
   const [todos, setTodos] = useState([]);
-  
   const [addDialogId, setAddDialogId] = useState(null);
 
   return (
@@ -25,18 +25,20 @@ export default function App() {
       <Pressable style={styles.addButton} onPress={() => setAddDialogId(0)}>
         <Text style={styles.addButtonText}>+</Text>
       </Pressable>
-      <View style={styles.container}>
-        <Image
-          source={require("./assets/todo.png")}
-          style={styles.image}
-        ></Image>
-        <View>
-          <Text style={styles.heading}>Todo App</Text>
-          <Text style={{ color: "#ffffff" }}>
-            Organize Today. Achieve Tomorrow.
-          </Text>
+      <LinearGradient colors={['#667ce9', '#7451ab']}>
+        <View style={styles.container}>
+          <Image
+            source={require("./assets/todo.png")}
+            style={styles.image}
+          ></Image>
+          <View style={{ flexShrink: 1 }}>
+            <Text style={styles.heading}>Todo App</Text>
+            <Text style={styles.shortHeading}>
+              Organize Today. Achieve Tomorrow.
+            </Text>
+          </View>
         </View>
-      </View>
+      </LinearGradient>
       <View style={{ paddingHorizontal: 18, flex: 1 }}>
         <Modal animationType="slide"
           visible={addDialogId != null}
@@ -72,15 +74,31 @@ const styles = StyleSheet.create({
   },
   container: {
     paddingTop: 48,
-    padding: 24,
+    paddingVertical: 24,
+    paddingHorizontal: 24,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#4f72fc",
+    // backgroundColor: "#4f72fc",
     borderBottomEndRadius: 32,
     borderBottomStartRadius: 32,
+    gap: 8,
+  },
+  heading: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: "white",
+  },
+  shortHeading: {
+    fontSize: 16,
+    color: "white",
+    fontStyle: "italic"
+  },
+  image: {
+    width: 82,
+    height: 82,
   },
   addButton: {
-    backgroundColor: "#4f72fc",
+    backgroundColor: "#7451ab",
     width: 56,
     height: 56,
     borderRadius: 28,
@@ -99,15 +117,6 @@ const styles = StyleSheet.create({
   addButtonText: {
     color: "white",
     fontSize: 24,
-  },
-  heading: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "white",
-  },
-  image: {
-    width: 68,
-    height: 68,
   },
   secondHeading: {
     marginTop: 24,
